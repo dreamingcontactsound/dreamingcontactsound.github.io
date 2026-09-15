@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dreaming the Sound of Contact</title>
+  <meta name="description" content="Leveraging generated video and audio for zero-shot force-aware robotic manipulation — In Submission.">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Dreaming the Sound of Contact">
+  <meta property="og:description" content="Leveraging generated video and audio for zero-shot force-aware robotic manipulation.">
+  <meta property="og:image" content="figs/concept.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="page">
+
+    <!-- 1. HERO (editorial) ================================== -->
+    <section class="hero reveal">
+      <div class="row row--hero">
+        <div>
+          <!-- Animated brand mark: cute robot mascot taps the floor, sound waves emanate. -->
+          <span class="contact-pulse" aria-hidden="true">
+            <svg class="arm-anim" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg">
+              <!-- Floor line -->
+              <line x1="6" y1="110" x2="214" y2="110" stroke="#1a1420" stroke-width="1.4" opacity=".18"/>
+              <!-- Shadow under the mascot -->
+              <ellipse class="shadow" cx="72" cy="110" rx="34" ry="2.5" fill="#1a1420" opacity=".14"/>
+
+              <!-- Sound-wave arcs radiating from tap point (175, 107) -->
+              <g class="waves" fill="none" stroke-width="2.2" stroke-linecap="round">
+                <path class="wave w1" d="M 160 107 A 15 15 0 0 1 190 107" stroke="#ff6b8a"/>
+                <path class="wave w2" d="M 155 107 A 20 20 0 0 1 195 107" stroke="#b39cff"/>
+                <path class="wave w3" d="M 148 107 A 27 27 0 0 1 202 107" stroke="#7cd4b5"/>
+              </g>
+              <!-- Impact sparks -->
+              <g class="sparks">
+                <circle class="spark s1" cx="170" cy="96" r="1.8" fill="#ffc97a"/>
+                <circle class="spark s2" cx="182" cy="99" r="1.4" fill="#ff9e8c"/>
+                <circle class="spark s3" cx="162" cy="100" r="1.3" fill="#b39cff"/>
+                <circle class="spark s4" cx="188" cy="93" r="1.2" fill="#7cd4b5"/>
+              </g>
+
+              <!-- Mascot group (gently bobs) -->
+              <g class="mascot">
+                <!-- Antenna -->
+                <g class="antenna">
+                  <line x1="72" y1="48" x2="72" y2="32" stroke="#1a1420" stroke-width="2.4" stroke-linecap="round"/>
+                  <circle cx="72" cy="30" r="4.4" fill="#ff9e8c" stroke="#1a1420" stroke-width="1.4"/>
+                  <circle cx="70.5" cy="28.5" r="1.2" fill="#fff" opacity=".7"/>
+                </g>
+
+                <!-- Body -->
+                <rect x="42" y="48" width="60" height="58" rx="20"
+                      fill="#eae3ff" stroke="#1a1420" stroke-width="2"/>
+                <!-- Body side highlight -->
+                <path d="M 48 56 Q 46 80, 50 98" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+
+                <!-- Face visor -->
+                <rect x="50" y="60" width="44" height="24" rx="10" fill="#1a1420"/>
+
+                <!-- Eyes -->
+                <g class="eyes">
+                  <circle class="eye" cx="62" cy="72" r="3.2" fill="#fff"/>
+                  <circle class="eye" cx="82" cy="72" r="3.2" fill="#fff"/>
+                  <circle cx="63" cy="71" r=".9" fill="#6e7bff"/>
+                  <circle cx="83" cy="71" r=".9" fill="#6e7bff"/>
+                </g>
+
+                <!-- Cheeks -->
+                <circle cx="48" cy="86" r="2.6" fill="#ff9e8c" opacity=".72"/>
+                <circle cx="96" cy="86" r="2.6" fill="#ff9e8c" opacity=".72"/>
+
+                <!-- Left arm (idle, hanging) -->
+                <line x1="42" y1="72" x2="34" y2="88" stroke="#1a1420" stroke-width="3.4" stroke-linecap="round"/>
+                <circle cx="34" cy="88" r="4.4" fill="#b39cff" stroke="#1a1420" stroke-width="1.6"/>
+
+                <!-- Right arm — taps the floor. Rotates around shoulder (102, 72). -->
+                <g class="tap-arm">
+                  <line x1="102" y1="72" x2="140" y2="92"
+                        stroke="#1a1420" stroke-width="3.4" stroke-linecap="round"/>
+                  <line x1="140" y1="92" x2="172" y2="104"
+                        stroke="#1a1420" stroke-width="3.4" stroke-linecap="round"/>
+                  <circle cx="140" cy="92" r="2.4" fill="#6e7bff"/>
+                  <circle class="hand" cx="172" cy="104" r="5" fill="#b39cff" stroke="#1a1420" stroke-width="1.6"/>
+                </g>
+
+                <!-- Feet -->
+                <rect x="52" y="102" width="16" height="8" rx="4" fill="#6e7bff" stroke="#1a1420" stroke-width="1.6"/>
+                <rect x="76" y="102" width="16" height="8" rx="4" fill="#6e7bff" stroke="#1a1420" stroke-width="1.6"/>
+              </g>
+            </svg>
+            <span class="label">Contact → sound</span>
+          </span>
+
+          <p class="kicker">In Submission</p>
+          <h1>Dreaming the Sound of&nbsp;Contact</h1>
+          <p class="hero__subtitle">Leveraging video and audio generation for zero-shot force-aware manipulation.</p>
+          <p class="hero__authors">
+            Under double-blind review
+          </p>
+          <div class="btn-row">
+            <a class="btn" href="#results">
+              Watch<span class="btn__arrow" aria-hidden="true">↓</span>
+            </a>
+            <!-- TODO: replace span with <a> when arXiv URL exists -->
+            <span class="btn btn--ghost btn--inactive" aria-disabled="true">
+              arXiv<span class="btn__tag">Coming Soon</span>
+            </span>
+            <!-- TODO: replace span with <a> when public repo URL exists -->
+            <span class="btn btn--ghost btn--inactive" aria-disabled="true">
+              Code<span class="btn__tag">Coming Soon</span>
+            </span>
+            <!-- TODO: replace span with <a> when dataset URL exists -->
+            <span class="btn btn--ghost btn--inactive" aria-disabled="true">
+              Dataset<span class="btn__tag">Coming Soon</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Concept figure on transparent background, no card treatment. -->
+        <div class="hero__visual">
+          <img src="figs/concept.png?v=10"
+               alt="Concept overview: three stacked panels showing generated video and audio, a robot contact point with force-direction and audio-magnitude annotations, and real-world execution examples — whiteboard wiping, carrot peeling, lamp button pressing, and box stacking."/>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. VIDEO EXPLORER (experiments, upfront) ============= -->
+    <section class="explorer section section--divided reveal" id="results">
+      <div class="explorer__head">
+        <p class="kicker">Experiments</p>
+        <h2>Video for motion, audio for force.</h2>
+        <p class="muted">
+          Pick a task and a run. Each row plays the <strong>generated</strong> reference video + audio, our <strong>force-aware</strong> execution on a Franka arm that tracks the audio-derived force profile, and a <strong>kinematic-only baseline</strong> for comparison.
+          <span class="sound-hint"><span class="sound-hint__icon" aria-hidden="true">🔊</span>Turn the sound on — the contact audio <em>is</em> the force signal.</span>
+        </p>
+      </div>
+
+      <div class="explorer__bar">
+        <div class="seg seg--task" role="tablist" aria-label="Select task">
+          <button type="button" class="seg__btn is-active" data-task="whiteboard">Whiteboard wiping</button>
+          <button type="button" class="seg__btn" data-task="carrot">Carrot peeling</button>
+          <button type="button" class="seg__btn" data-task="chocolate">Chocolate box stacking</button>
+          <button type="button" class="seg__btn" data-task="lamp">Lamp button</button>
+        </div>
+
+        <div class="explorer__right">
+          <span class="score-readout" id="score-readout">
+            <span class="score__pill score__pill--ours num" id="score-ours">6 / 6 ours</span>
+            <span class="score__pill score__pill--base num" id="score-base">0 / 6 base</span>
+          </span>
+          <div class="seg seg--run" role="tablist" aria-label="Select run">
+            <span class="seg__caption">Run</span>
+            <button type="button" class="seg__btn is-active" data-run="1">1</button>
+            <button type="button" class="seg__btn" data-run="2">2</button>
+            <button type="button" class="seg__btn" data-run="3">3</button>
+            <button type="button" class="seg__btn" data-run="4">4</button>
+            <button type="button" class="seg__btn" data-run="5">5</button>
+            <button type="button" class="seg__btn" data-run="6">6</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="explorer__videos">
+        <figure class="explorer__video">
+          <figcaption>
+            <span class="vlabel vlabel--gen">Generated</span>
+            <span class="vdesc">Video + Audio from Seedance 2.0</span>
+          </figcaption>
+          <video id="v-gen" data-kind="gen"
+                 src="videos/whiteboard_run1_gen.mp4?v=7"
+                 poster="videos/whiteboard_run1_gen.jpg?v=7"
+                 playsinline preload="metadata" controls muted></video>
+        </figure>
+        <figure class="explorer__video">
+          <figcaption>
+            <span class="vlabel vlabel--base">Baseline · kinematic</span>
+            <span class="vdesc">Same trajectory, no force regulation</span>
+          </figcaption>
+          <div class="video-wrap">
+            <video id="v-base" data-kind="base"
+                   src="videos/whiteboard_run1_base.mp4?v=7"
+                   poster="videos/whiteboard_run1_base.jpg?v=7"
+                   playsinline preload="metadata" controls muted></video>
+            <span class="video-badge">2×</span>
+          </div>
+        </figure>
+        <figure class="explorer__video">
+          <figcaption>
+            <span class="vlabel vlabel--ours">Ours · force-aware</span>
+            <span class="vdesc">Franka arm tracks the audio-derived force profile</span>
+          </figcaption>
+          <div class="video-wrap">
+            <video id="v-ours" data-kind="ours"
+                   src="videos/whiteboard_run1_ours.mp4?v=7"
+                   poster="videos/whiteboard_run1_ours.jpg?v=7"
+                   playsinline preload="metadata" controls muted></video>
+            <span class="video-badge">2×</span>
+          </div>
+        </figure>
+      </div>
+
+    </section>
+
+    <!-- 3. ABSTRACT (editorial) ============================== -->
+    <section class="abstract section section--divided reveal" id="abstract">
+      <p class="kicker">Abstract</p>
+      <h2>Audio is the force signal video can't see.</h2>
+      <div class="abstract__body">
+        <p>
+          Recent advances in video generation enable learning robot manipulation trajectories from generated
+          videos. However, these approaches produce purely kinematic trajectories that lack force information,
+          leading to failure in contact-rich tasks where appropriate contact forces are essential for success.
+          Generated audio carries a complementary and underexplored signal: contact sounds encode force dynamics
+          that video alone cannot capture.
+        </p>
+        <p>
+          We present a pipeline that jointly leverages generated video and audio to recover both motion
+          trajectories and contact force profiles from a single task description. We execute these force-aware
+          trajectories on a Franka Panda robot using a closed-loop force regulator that tracks the audio-derived
+          force profile during contact. Real-robot experiments across four contact-rich tasks — whiteboard
+          wiping, carrot peeling, box stacking, and button pressing — demonstrate that our force-aware pipeline
+          enables successful manipulation from video generation, where a kinematic-only baseline fails.
+        </p>
+        <p>
+          We further show that the pipeline can serve as an automated force-aware data-generation engine:
+          a closed-loop policy trained on the generated demonstrations generalizes across object placements
+          and appearances.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. PIPELINE (iridescent aurora card) ================= -->
+    <section class="card card--aurora pipeline reveal" id="pipeline">
+      <p class="kicker">Pipeline</p>
+      <h2>Audio as the force signal.</h2>
+      <p>
+        Our vision pipeline localizes the object and gripper (MolmoPoint), segments them (SAM&nbsp;2), and
+        recovers depth and 3D point tracks (TAPIP3D) to detect contacts and infer force directions. The audio
+        pipeline isolates the contact sound (SAM-Audio) and extracts loudness as a force-magnitude proxy.
+        A 1&nbsp;kHz impedance controller closes the loop on the audio-derived force profile.
+      </p>
+      <img src="figs/pipeline.png?v=9" alt="Pipeline diagram: vision branch localizes, segments, and tracks in 3D to estimate force direction; audio branch isolates the contact sound and extracts loudness; the combined force-aware trajectory runs on a Franka Panda with closed-loop force regulation." />
+    </section>
+
+    <!-- 4b. POLICY LEARNING ================================== -->
+    <section class="abstract section section--divided reveal" id="policy">
+      <p class="kicker">Policy Learning</p>
+      <h2>The pipeline is also a data engine.</h2>
+      <div class="abstract__body">
+        <p>
+          Beyond single-trajectory execution, we use the pipeline to <strong>generate training data</strong>:
+          for all four tasks, we randomize the object position, run the full force-aware pipeline, and keep
+          50 successful rollouts per task as demonstrations, each recording end-effector pose, force profile,
+          and two RGB views. We train a CNN-based <strong>Diffusion Policy</strong> from the wrist and external
+          RGB images and the end-effector pose, in two variants: one <em>without</em> force input and one that
+          additionally observes the measured 3-D contact force. At test time both command poses through the
+          same fixed-stiffness impedance controller, with <em>no force regulator</em>, on unseen object
+          placements and appearances.
+        </p>
+        <p>
+          The policy without force input already succeeds in <strong class="num">29/40</strong> trials across
+          the four tasks; adding force input raises this to <strong class="num">34/40</strong>, with the largest
+          gains on peeling and pressing. Because the demonstrations are collected under force-aware execution,
+          the recorded poses already encode the contact behavior: comparing all demonstrations with all
+          successful rollouts as mean&nbsp;&plusmn;&nbsp;std over <strong>in-contact task progress</strong>
+          (normalized end-effector path length accumulated during contact) shows both policies maintaining
+          sustained contact and tracking the demonstrations within roughly 2&nbsp;N on wiping, pressing, and
+          stacking. Peeling is the exception: both policies press harder than the demonstrations, and the
+          force-input policy presses hardest, which removes the skin more reliably.
+        </p>
+      </div>
+      <div style="overflow-x:auto;margin-top:8px">
+      <table class="results-table">
+        <thead>
+          <tr><th></th><th>Wiping</th><th>Peeling</th><th>Stacking</th><th>Pressing</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>DP w/o force input</th><td class="num">8/10</td><td class="num">8/10</td><td class="num">8/10</td><td class="num">5/10</td><td class="num">29/40</td></tr>
+          <tr><th>DP w/ force input</th><td class="num"><strong>9/10</strong></td><td class="num"><strong>10/10</strong></td><td class="num">8/10</td><td class="num"><strong>7/10</strong></td><td class="num"><strong>34/40</strong></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;align-items:start">
+        <img src="figs/policy_setup.jpg?v=11" style="width:100%;height:auto;border-radius:14px"
+             alt="Experimental setups for whiteboard wiping, carrot peeling, lamp button pressing, and chocolate box stacking: Franka Panda arms with a RealSense L515 external camera and a wrist-mounted RealSense D455."/>
+        <img src="figs/policy_force.png?v=11" style="width:100%;height:auto;border-radius:14px;background:#fff"
+             alt="Contact force over in-contact task progress for all four tasks: data collection (green), policy without force input (red), and policy with force input (blue), shown as mean and standard deviation."/>
+      </div>
+    </section>
+
+
+    <!-- 5. BIBTEX (hidden for now; re-enable by removing the outer comment) ==
+    <section class="card card--bibtex bibtex section--divided reveal" id="cite">
+      <div class="bibtex__head">
+        <p class="kicker">Cite</p>
+        <button id="copy-bib" class="btn" type="button" aria-label="Copy BibTeX to clipboard">
+          Copy<span class="btn__arrow" aria-hidden="true">↗</span>
+        </button>
+      </div>
+<pre class="mono" id="bib"><code>@inproceedings{dreaming2026sound,
+  title     = {Dreaming the Sound of Contact: Leveraging Video and Audio Generation
+               for Zero-Shot Force-Aware Manipulation},
+  author    = {},
+  booktitle = {ICRA Workshop},
+  year      = {2026}
+}</code></pre>
+    </section>
+    -->
+
+    <!-- 6. FOOTER ============================================ -->
+    <footer class="page-footer">
+      <span class="muted">Built with ♥</span>
+    </footer>
+  </main>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
