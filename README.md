@@ -1,7 +1,7 @@
 # Dreaming the Sound of Contact — project page
 
 Static site for the paper "Dreaming the Sound of Contact:
-Leveraging Video and Audio Generation for Zero-Shot Force-Aware Manipulation and Data Generation" (under double-blind review).
+Leveraging Video and Audio Generation for Zero-Shot Force-Aware Manipulation and Data Generation".
 
 Live at: https://dreamingcontactsound.github.io/
 
