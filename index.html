@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=17">
 </head>
 <body>
   <main class="page">
@@ -125,7 +125,7 @@
 
         <!-- Concept figure on transparent background, no card treatment. -->
         <div class="hero__visual">
-          <img src="figs/concept.png?v=10"
+          <img src="figs/concept.png?v=11"
                alt="Concept overview: three stacked panels showing generated video and audio, a robot contact point with force-direction and audio-magnitude annotations, and real-world execution examples — whiteboard wiping, carrot peeling, lamp button pressing, and box stacking."/>
         </div>
       </div>
@@ -208,74 +208,84 @@
 
     </section>
 
-    <!-- 3. ABSTRACT (editorial) ============================== -->
-    <section class="abstract section section--divided reveal" id="abstract">
-      <p class="kicker">Abstract</p>
-      <h2>Audio is the force signal video can't see.</h2>
-      <div class="abstract__body">
-        <p>
-          Recent advances in video generation enable learning robot manipulation trajectories from generated
-          videos. However, these approaches produce purely kinematic trajectories that lack force information,
-          leading to failure in contact-rich tasks where appropriate contact forces are essential for success.
-          Generated audio carries a complementary and underexplored signal: contact sounds encode force dynamics
-          that video alone cannot capture.
-        </p>
-        <p>
-          We present a pipeline that jointly leverages generated video and audio to recover both motion
-          trajectories and contact force profiles from a single task description. We execute these force-aware
-          trajectories on a Franka Panda robot using a closed-loop force regulator that tracks the audio-derived
-          force profile during contact. Real-robot experiments across four contact-rich tasks — whiteboard
-          wiping, carrot peeling, box stacking, and button pressing — demonstrate that our force-aware pipeline
-          enables successful manipulation from video generation, where a kinematic-only baseline fails.
-        </p>
-        <p>
-          We further show that the pipeline can serve as an automated force-aware data-generation engine:
-          a closed-loop policy trained on the generated demonstrations generalizes across object placements
-          and appearances.
-        </p>
-      </div>
-    </section>
+    <!-- 3. WALKTHROUGH (numbered timeline) =================== -->
+    <div class="tl">
 
-    <!-- 3. PIPELINE (iridescent aurora card) ================= -->
-    <section class="card card--aurora pipeline reveal" id="pipeline">
-      <p class="kicker">Pipeline</p>
-      <h2>Audio as the force signal.</h2>
-      <p>
-        Our vision pipeline localizes the object and gripper (MolmoPoint), segments them (SAM&nbsp;2), and
-        recovers depth and 3D point tracks (TAPIP3D) to detect contacts and infer force directions. The audio
-        pipeline isolates the contact sound (SAM-Audio) and extracts loudness as a force-magnitude proxy.
-        A 1&nbsp;kHz impedance controller closes the loop on the audio-derived force profile.
-      </p>
-      <img src="figs/pipeline.png?v=9" alt="Pipeline diagram: vision branch localizes, segments, and tracks in 3D to estimate force direction; audio branch isolates the contact sound and extracts loudness; the combined force-aware trajectory runs on a Franka Panda with closed-loop force regulation." />
-    </section>
-
-    <!-- 4b. POLICY LEARNING ================================== -->
-    <section class="abstract section section--divided reveal" id="policy">
-      <p class="kicker">Policy Learning</p>
-      <h2>The pipeline is also a data engine.</h2>
-      <div class="abstract__body">
-        <p>
-          Beyond single-trajectory execution, we use the pipeline to <strong>generate training data</strong>:
-          for all four tasks, we randomize the object position, run the full force-aware pipeline, and keep
-          50 successful rollouts per task as demonstrations, each recording end-effector pose, force profile,
-          and two RGB views. We train a CNN-based <strong>Diffusion Policy</strong> from the wrist and external
-          RGB images and the end-effector pose, in two variants: one <em>without</em> force input and one that
-          additionally observes the measured 3-D contact force. At test time both command poses through the
-          same fixed-stiffness impedance controller, with <em>no force regulator</em>, on unseen object
-          placements and appearances.
-        </p>
-        <p>
-          The policy without force input already succeeds in <strong class="num">29/40</strong> trials across
-          the four tasks; adding force input raises this to <strong class="num">34/40</strong>, with the largest
-          gains on peeling and pressing. Because the demonstrations are collected under force-aware execution,
-          the recorded poses already encode the contact behavior: comparing all demonstrations with all
-          successful rollouts as mean&nbsp;&plusmn;&nbsp;std over <strong>in-contact task progress</strong>
-          (normalized end-effector path length accumulated during contact) shows both policies maintaining
-          sustained contact and tracking the demonstrations within roughly 2&nbsp;N on wiping, pressing, and
-          stacking. Peeling is the exception: both policies press harder than the demonstrations, and the
-          force-input policy presses hardest, which removes the skin more reliably.
-        </p>
+      <div class="stp reveal" id="idea">
+        <div class="stp__n">1</div>
+        <div class="stp__body">
+          <p class="kicker">The problem</p>
+          <h2>A video shows where, not how hard.</h2>
+          <div class="stp__grid">
+            <div><p>Video generators can now dream up a robot doing a task. Turn those frames into a trajectory and a real robot can copy the motion. But a video only shows <strong>where</strong> the arm goes, not <strong>how hard</strong> it presses. For wiping, peeling, or pressing a button, that missing force is the difference between finishing the job and hovering a few millimeters above the surface, or slamming into it and triggering a safety stop.</p></div>
+            <div><p>The generated <strong>audio</strong> fills the gap. Contact sounds get louder as contact gets harder, so we use loudness as a proxy for force. From one task description we generate video and audio, take the <strong>motion</strong> from the video and the <strong>force profile</strong> from the audio, and run both on a Franka Panda with a force regulator in the loop. Those executions are good enough to become training data, too.</p></div>
+          </div>
+          <div class="big">
+            <div class="base"><b class="num">8/40</b><span>motion only · baseline</span></div>
+            <div class="ours"><b class="num">36/40</b><span>motion + audio force · ours</span></div>
+          </div>
+        </div>
       </div>
+
+      <div class="stp reveal" id="pipeline">
+        <div class="stp__n stp__n--alt">2</div>
+        <div class="stp__body">
+          <p class="kicker">The pipeline</p>
+          <h2>Four steps from a sentence to contact.</h2>
+          <ol class="steps">
+            <li><b>Generate</b>One RGB image plus a text prompt goes to Seedance&nbsp;2.0, which returns a video with audio (the exact prompts are <a href="#prompts">at the bottom</a>).</li>
+            <li><b>Motion from video</b>Find the gripper and object (MolmoPoint), segment them (SAM&nbsp;2), and track them in 3D (TAPIP3D) to get the end-effector path, the contact moments, and the force direction.</li>
+            <li><b>Force from audio</b>Isolate the contact sound (SAM-Audio) and turn its loudness into a force-magnitude profile over the contact interval.</li>
+            <li><b>Execute</b>A 1&nbsp;kHz impedance controller follows the path while a force regulator tracks the audio-derived profile during contact.</li>
+          </ol>
+          <div class="card card--aurora pipeline">
+            <img src="figs/pipeline.png?v=9" alt="Pipeline diagram: vision branch localizes, segments, and tracks in 3D to estimate force direction; audio branch isolates the contact sound and extracts loudness; the combined force-aware trajectory runs on a Franka Panda with closed-loop force regulation." />
+          </div>
+        </div>
+      </div>
+
+      <div class="stp reveal" id="force-profile">
+        <div class="stp__n stp__n--mint">3</div>
+        <div class="stp__body">
+          <p class="kicker">Sanity check</p>
+          <h2>Does the shape of the force matter?</h2>
+          <div class="stp__grid">
+            <div><p>If any contact force works, we could just press with a constant 10&nbsp;N and skip the audio. So we tried that. On wiping and peeling we ran the same trajectories with two audio-shaped profiles (peaking at 10 or 15&nbsp;N) and two constant profiles (10 and 15&nbsp;N), ten trials each.</p><p>Constant force fails at first contact: the command jumps from 0 to 10&nbsp;N in one step, the measured force overshoots toward the 20&nbsp;N limit, and the robot stops itself. The audio-shaped profile starts low and ramps up after contact, so it never trips the limit, and it finishes with a lower peak force and less total impulse.</p></div>
+            <figure class="vis">
+              <img src="figs/force_profile.png?v=12" alt="Desired (dashed) and measured (solid) force over the contact phase for variable 15 N (green) and constant 10 N (red) profiles on whiteboard wiping and carrot peeling; mean and one standard deviation over successful rollouts."/>
+              <figcaption class="muted">What the robot was asked to do (dashed) vs. what it actually did (solid). Green is the audio-shaped profile, red the constant one. The audio profile ramps in; the constant one steps in and overshoots.</figcaption>
+            </figure>
+          </div>
+      <div style="overflow-x:auto;margin-top:8px">
+      <table class="results-table">
+        <thead>
+          <tr><th style="text-align:left">Task</th><th style="text-align:left">Profile</th><th>Success</th><th>Peak (N)</th><th>Impulse (N·s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Wiping</th><td style="text-align:left">Variable, <em>F</em><sub>max</sub>&nbsp;=&nbsp;10</td><td class="num">7/10</td><td class="num"><strong>9.31 ± 1.43</strong></td><td class="num"><strong>15.20 ± 4.42</strong></td></tr>
+          <tr><th></th><td style="text-align:left">Variable, <em>F</em><sub>max</sub>&nbsp;=&nbsp;15</td><td class="num"><strong>10/10</strong></td><td class="num">12.38 ± 1.13</td><td class="num">21.50 ± 3.32</td></tr>
+          <tr><th></th><td style="text-align:left">Constant, 10&nbsp;N</td><td class="num">8/10</td><td class="num">12.86 ± 0.45</td><td class="num">25.71 ± 5.11</td></tr>
+          <tr><th></th><td style="text-align:left">Constant, 15&nbsp;N</td><td class="num">2/10</td><td class="num">15.36 ± 0.30</td><td class="num">30.28 ± 6.32</td></tr>
+          <tr><th>Peeling</th><td style="text-align:left">Variable, <em>F</em><sub>max</sub>&nbsp;=&nbsp;10</td><td class="num"><strong>9/10</strong></td><td class="num"><strong>8.76 ± 1.65</strong></td><td class="num"><strong>18.34 ± 5.16</strong></td></tr>
+          <tr><th></th><td style="text-align:left">Variable, <em>F</em><sub>max</sub>&nbsp;=&nbsp;15</td><td class="num"><strong>9/10</strong></td><td class="num">11.39 ± 1.52</td><td class="num">27.88 ± 9.74</td></tr>
+          <tr><th></th><td style="text-align:left">Constant, 10&nbsp;N</td><td class="num">8/10</td><td class="num">12.98 ± 1.42</td><td class="num">39.16 ± 11.13</td></tr>
+          <tr><th></th><td style="text-align:left">Constant, 15&nbsp;N</td><td class="num">6/10</td><td class="num">14.79 ± 0.93</td><td class="num">106.42 ± 61.97</td></tr>
+        </tbody>
+      </table>
+      </div>
+          <p class="muted" style="font-size:13px;margin-top:8px">Peak force and impulse: mean ± std over all 10 trials, including failures.</p>
+        </div>
+      </div>
+
+      <div class="stp reveal" id="policy">
+        <div class="stp__n">4</div>
+        <div class="stp__body">
+          <p class="kicker">Then train on it</p>
+          <h2>The pipeline is also a data engine.</h2>
+          <div class="stp__grid">
+            <div><p>Every successful execution is a demonstration with images, poses, and a force profile. So we let the pipeline collect <strong>50 demonstrations per task</strong> at random object positions and trained a <strong>Diffusion Policy</strong> on them: two camera views plus the end-effector pose in, poses out. We trained two versions, one that also sees the measured contact force and one that doesn't.</p></div>
+            <div><p>At test time there is <strong>no force regulator</strong>. The policy just commands poses on new object placements and appearances, and the contact force comes from how deep it learned to press. Without force input it succeeds in <strong class="num">29/40</strong> trials; with force input, <strong class="num">34/40</strong>. On most tasks the policy's force stays within about 2&nbsp;N of the demonstrations. Peeling is the exception: the policies press harder than the demos, and the one with force input presses hardest, which peels more reliably.</p></div>
+          </div>
       <div style="overflow-x:auto;margin-top:8px">
       <table class="results-table">
         <thead>
@@ -287,20 +297,42 @@
         </tbody>
       </table>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;align-items:start">
-        <img src="figs/policy_setup.jpg?v=11" style="width:100%;height:auto;border-radius:14px"
-             alt="Experimental setups for whiteboard wiping, carrot peeling, lamp button pressing, and chocolate box stacking: Franka Panda arms with a RealSense L515 external camera and a wrist-mounted RealSense D455."/>
-        <img src="figs/policy_force.png?v=11" style="width:100%;height:auto;border-radius:14px;background:#fff"
-             alt="Contact force over in-contact task progress for all four tasks: data collection (green), policy without force input (red), and policy with force input (blue), shown as mean and standard deviation."/>
+          <div class="figs2">
+            <img src="figs/policy_setup.jpg?v=12" alt="Experimental setups for whiteboard wiping, carrot peeling, lamp button pressing, and chocolate box stacking: Franka Panda arms with a RealSense L515 external camera and a wrist-mounted RealSense D455."/>
+            <img src="figs/policy_force.png?v=12" style="background:#fff" alt="Contact force over in-contact task progress for all four tasks: data collection (green), policy without force input (red), and policy with force input (blue), shown as mean and standard deviation."/>
+          </div>
+        </div>
       </div>
-    </section>
 
+      <div class="stp reveal" id="prompts">
+        <div class="stp__n stp__n--mint">5</div>
+        <div class="stp__body">
+          <p class="kicker">Appendix</p>
+          <h2>The prompts we used.</h2>
+          <p>Every generation call is one shared system prompt with the task description dropped into it.</p>
+          <div class="prompt prompt--sys">
+            <span class="prompt__label">System prompt</span>
+            <pre class="mono">Video: The camera remains stationary while &lt;TASK SPECIFIC PROMPT&gt;.
+
+Audio: Emphasize the sound of physical interaction and contact force central to the action, while suppressing all ambient, background, and unrelated sounds.</pre>
+          </div>
+          <div class="prompt-grid">
+            <div class="prompt"><span class="prompt__label">Whiteboard wiping</span><pre class="mono">The gripper, holding the eraser, slowly wipes the black marks off the whiteboard from right to left once, then retracts at the end.</pre></div>
+            <div class="prompt"><span class="prompt__label">Carrot peeling</span><pre class="mono">The left gripper, holding the yellow peeler, slowly peels off a layer of the carrot skin, while the right gripper remains still.</pre></div>
+            <div class="prompt"><span class="prompt__label">Chocolate box stacking</span><pre class="mono">The gripper's left finger slides fully under the chocolate box, forms a fully stable grasp, and slowly puts it on the pile of books.</pre></div>
+            <div class="prompt"><span class="prompt__label">Lamp button pressing</span><pre class="mono">The gripper performs a single press on the white button on the table and then rises back up, while remaining closed.</pre></div>
+          </div>
+          <p class="muted" style="font-size:13px;margin-top:10px">Audio separation uses one SAM-Audio prompt for every task: “The sound of contact between gripper and &lt;object&gt;”.</p>
+        </div>
+      </div>
+
+    </div>
 
     <!-- 6. FOOTER ============================================ -->
     <footer class="page-footer">
       <span class="muted">Built with ♥</span>
     </footer>
   </main>
-  <script src="assets/app.js" defer></script>
+  <script src="assets/app.js?v=13" defer></script>
 </body>
 </html>
