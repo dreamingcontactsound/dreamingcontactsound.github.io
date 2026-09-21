@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/style.css?v=17">
+  <link rel="stylesheet" href="assets/style.css?v=19">
 </head>
 <body>
   <main class="page">
@@ -244,8 +244,57 @@
         </div>
       </div>
 
+      <div class="stp reveal" id="audio-check">
+        <div class="stp__n">3</div>
+        <div class="stp__body">
+          <p class="kicker">Audio check</p>
+          <h2>Ask for a harder hit, get a louder sound.</h2>
+          <div class="stp__grid">
+            <div><p>The whole idea only works if the generator's audio responds to force, so we tested that directly. Same starting image of a hand holding a hammer, one prompt asking for two strikes on the table: one at 5&nbsp;N and one at 20&nbsp;N. We generated ten videos with the soft strike first and ten with the hard strike first, then measured how loud each strike is.</p></div>
+            <div><p>In <strong class="num">18 of 20</strong> videos the strike prompted as 20&nbsp;N is the louder one, <strong class="num">9 of 10</strong> in each order. The two misses are near-ties. This shows the generator follows a prompted force order. It does not show that loudness measures physical force.</p></div>
+          </div>
+          <div class="hammer">
+            <figure class="hammer__item">
+              <figcaption><span class="vlabel vlabel--gen">Prompt: 5 N, then 20 N</span><span class="vdesc">Turn the sound on and listen for the second hit</span></figcaption>
+              <video src="videos/hammer_5to20.mp4?v=2" poster="videos/hammer_5to20.jpg?v=2" playsinline preload="metadata" controls></video>
+              <div class="meter" role="img" aria-label="Loudness of the two strikes: first -23.9 LUFS, second -17.1 LUFS">
+                <div class="meter__row">
+                  <span class="meter__name">1st strike<small>prompted 5 N</small></span>
+                  <span class="meter__track"><span class="meter__fill" style="width:62%"></span></span>
+                  <span class="meter__val num">-23.9<small>LUFS</small></span>
+                </div>
+                <div class="meter__row is-loud">
+                  <span class="meter__name">2nd strike<small>prompted 20 N</small></span>
+                  <span class="meter__track"><span class="meter__fill" style="width:100%"></span></span>
+                  <span class="meter__val num">-17.1<small>LUFS</small></span>
+                </div>
+                <p class="meter__note">The 2nd strike, prompted as 20&nbsp;N, is <strong>6.8&nbsp;LU louder</strong>, about 1.6× as loud to the ear.</p>
+              </div>
+            </figure>
+            <figure class="hammer__item">
+              <figcaption><span class="vlabel vlabel--gen">Prompt: 20 N, then 5 N</span><span class="vdesc">Same prompt with the order flipped</span></figcaption>
+              <video src="videos/hammer_20to5.mp4?v=1" poster="videos/hammer_20to5.jpg?v=1" playsinline preload="metadata" controls></video>
+              <div class="meter" role="img" aria-label="Loudness of the two strikes: first -14.8 LUFS, second -28.5 LUFS">
+                <div class="meter__row is-loud">
+                  <span class="meter__name">1st strike<small>prompted 20 N</small></span>
+                  <span class="meter__track"><span class="meter__fill" style="width:100%"></span></span>
+                  <span class="meter__val num">-14.8<small>LUFS</small></span>
+                </div>
+                <div class="meter__row">
+                  <span class="meter__name">2nd strike<small>prompted 5 N</small></span>
+                  <span class="meter__track"><span class="meter__fill" style="width:39%"></span></span>
+                  <span class="meter__val num">-28.5<small>LUFS</small></span>
+                </div>
+                <p class="meter__note">The 1st strike, prompted as 20&nbsp;N, is <strong>13.7&nbsp;LU louder</strong>, about 2.6× as loud to the ear.</p>
+              </div>
+            </figure>
+          </div>
+          <p class="muted" style="font-size:12.5px;margin-top:10px">Bars show the peak loudness of each strike over a 400&nbsp;ms window, drawn relative to the louder strike. One further generation was excluded because it showed three strikes.</p>
+        </div>
+      </div>
+
       <div class="stp reveal" id="force-profile">
-        <div class="stp__n stp__n--mint">3</div>
+        <div class="stp__n">4</div>
         <div class="stp__body">
           <p class="kicker">Sanity check</p>
           <h2>Does the shape of the force matter?</h2>
@@ -278,7 +327,7 @@
       </div>
 
       <div class="stp reveal" id="policy">
-        <div class="stp__n">4</div>
+        <div class="stp__n">5</div>
         <div class="stp__body">
           <p class="kicker">Then train on it</p>
           <h2>The pipeline is also a data engine.</h2>
@@ -305,7 +354,7 @@
       </div>
 
       <div class="stp reveal" id="prompts">
-        <div class="stp__n stp__n--mint">5</div>
+        <div class="stp__n">6</div>
         <div class="stp__body">
           <p class="kicker">Appendix</p>
           <h2>The prompts we used.</h2>
@@ -322,6 +371,9 @@ Audio: Emphasize the sound of physical interaction and contact force central to 
             <div class="prompt"><span class="prompt__label">Chocolate box stacking</span><pre class="mono">The gripper's left finger slides fully under the chocolate box, forms a fully stable grasp, and slowly puts it on the pile of books.</pre></div>
             <div class="prompt"><span class="prompt__label">Lamp button pressing</span><pre class="mono">The gripper performs a single press on the white button on the table and then rises back up, while remaining closed.</pre></div>
           </div>
+          <div class="prompt" style="margin-top:12px"><span class="prompt__label">Audio check · hammer strikes</span><pre class="mono">Strike the table exactly twice with a hammer: first with &lt;F1&gt; of force, then with &lt;F2&gt;. Each strike must produce exactly one clean contact without bouncing.
+
+(F1, F2) = (5 N, 20 N) or (20 N, 5 N)</pre></div>
           <p class="muted" style="font-size:13px;margin-top:10px">Audio separation uses one SAM-Audio prompt for every task: “The sound of contact between gripper and &lt;object&gt;”.</p>
         </div>
       </div>
