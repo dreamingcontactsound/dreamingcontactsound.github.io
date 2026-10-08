@@ -524,7 +524,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_01",
         "source": "Local trial_01",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/chocolate_run7_gen_user.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_run7_gen_user.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/chocolate_trial_01_base.mp4",
           "poster": "videos/zeroshot_v2/chocolate_trial_01_base.jpg",
@@ -541,8 +545,8 @@ window.EXPERIMENT_VIDEOS = {
         "id": "local-trial_02",
         "source": "Local trial_02",
         "gen": {
-          "src": "videos/zeroshot_v2/chocolate_trial_02_gen.mp4",
-          "poster": "videos/zeroshot_v2/chocolate_trial_02_gen.jpg",
+          "src": "videos/zeroshot_v2/chocolate_run8_gen_user.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_run8_gen_user.jpg",
           "speed": 1
         },
         "base": {
@@ -560,8 +564,8 @@ window.EXPERIMENT_VIDEOS = {
         "id": "local-trial_03",
         "source": "Local trial_03",
         "gen": {
-          "src": "videos/zeroshot_v2/chocolate_trial_03_gen.mp4",
-          "poster": "videos/zeroshot_v2/chocolate_trial_03_gen.jpg",
+          "src": "videos/zeroshot_v2/chocolate_run9_gen_user.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_run9_gen_user.jpg",
           "speed": 1
         },
         "base": {
@@ -578,7 +582,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_04",
         "source": "Local trial_04",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/chocolate_run10_gen_user.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_run10_gen_user.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/chocolate_trial_04_base.mp4",
           "poster": "videos/zeroshot_v2/chocolate_trial_04_base.jpg",

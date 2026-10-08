@@ -1,0 +1,26 @@
+[
+  {
+    "run": 7,
+    "source": "1.mp4",
+    "output": "videos/zeroshot_v2/chocolate_run7_gen_user.mp4",
+    "mapping": "User-supplied display mapping"
+  },
+  {
+    "run": 8,
+    "source": "2.mp4",
+    "output": "videos/zeroshot_v2/chocolate_run8_gen_user.mp4",
+    "mapping": "User-supplied display mapping"
+  },
+  {
+    "run": 9,
+    "source": "3.mp4",
+    "output": "videos/zeroshot_v2/chocolate_run9_gen_user.mp4",
+    "mapping": "User-supplied display mapping"
+  },
+  {
+    "run": 10,
+    "source": "4.mp4",
+    "output": "videos/zeroshot_v2/chocolate_run10_gen_user.mp4",
+    "mapping": "User-supplied display mapping"
+  }
+]
