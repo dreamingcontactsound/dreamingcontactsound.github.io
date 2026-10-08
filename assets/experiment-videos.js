@@ -540,7 +540,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_02",
         "source": "Local trial_02",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/chocolate_trial_02_gen.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_trial_02_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/chocolate_trial_02_base.mp4",
           "poster": "videos/zeroshot_v2/chocolate_trial_02_base.jpg",
@@ -555,7 +559,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_03",
         "source": "Local trial_03",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/chocolate_trial_03_gen.mp4",
+          "poster": "videos/zeroshot_v2/chocolate_trial_03_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/chocolate_trial_03_base.mp4",
           "poster": "videos/zeroshot_v2/chocolate_trial_03_base.jpg",
@@ -709,7 +717,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_01",
         "source": "Local trial_01",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/lamp_trial_01_gen.mp4",
+          "poster": "videos/zeroshot_v2/lamp_trial_01_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/lamp_trial_01_base.mp4",
           "poster": "videos/zeroshot_v2/lamp_trial_01_base.jpg",
@@ -724,7 +736,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_02",
         "source": "Local trial_02",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/lamp_trial_02_gen.mp4",
+          "poster": "videos/zeroshot_v2/lamp_trial_02_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/lamp_trial_02_base.mp4",
           "poster": "videos/zeroshot_v2/lamp_trial_02_base.jpg",
@@ -739,7 +755,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_03",
         "source": "Local trial_03",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/lamp_trial_03_gen.mp4",
+          "poster": "videos/zeroshot_v2/lamp_trial_03_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/lamp_trial_03_base.mp4",
           "poster": "videos/zeroshot_v2/lamp_trial_03_base.jpg",
@@ -754,7 +774,11 @@ window.EXPERIMENT_VIDEOS = {
       {
         "id": "local-trial_04",
         "source": "Local trial_04",
-        "gen": null,
+        "gen": {
+          "src": "videos/zeroshot_v2/lamp_trial_04_gen.mp4",
+          "poster": "videos/zeroshot_v2/lamp_trial_04_gen.jpg",
+          "speed": 1
+        },
         "base": {
           "src": "videos/zeroshot_v2/lamp_trial_04_base.mp4",
           "poster": "videos/zeroshot_v2/lamp_trial_04_base.jpg",
