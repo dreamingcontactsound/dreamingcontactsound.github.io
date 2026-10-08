@@ -17,3 +17,9 @@ Live at: https://dreamingcontactsound.github.io/
     python3 -m http.server 8080
 
 Open http://localhost:8080/
+
+## Experiment explorer update
+
+The explorer now contains 10 displayed pairs per task. Whiteboard and carrot use local zero-shot trials 01–10 at variable Fmax 15 N. Chocolate retains website runs 1–6 and adds local trials 01–04. Lamp retains website runs 1–6 and adds local trials 01–04; this is a selected display set, not a verified reconstruction of the paper evaluation cohort. Counts use existing manifests and legacy website aggregates, not new per-video adjudication.
+
+`assets/experiment-videos.js` maps every displayed clip. New media live in `videos/zeroshot_v2/`; all original files in `videos/` remain unchanged for recovery. New execution clips are 2×; generated clips are 1×. The eight added Lamp/Chocolate runs do not yet have verified generated-video matches. Chocolate local trial 01 is labeled as constant 15 N because its execution log records that setting.

@@ -21,128 +21,62 @@
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
   }
 
-  // --- Video explorer: task tabs + run dropdown swap video sources ---
-  const TASKS = {
-    whiteboard: { label: 'Whiteboard wiping',      success: { ours: 6, base: 0, total: 6 } },
-    carrot:     { label: 'Carrot peeling',         success: { ours: 4, base: 1, total: 6 } },
-    chocolate:  { label: 'Chocolate box stacking', success: { ours: 5, base: 0, total: 6 } },
-    lamp:       { label: 'Lamp button',            success: { ours: 4, base: 0, total: 6 } }
-  };
-
-  const taskBtns   = Array.from(document.querySelectorAll('.seg--task .seg__btn'));
-  const runBtns    = Array.from(document.querySelectorAll('.seg--run .seg__btn'));
-  const oursPill   = document.getElementById('score-ours');
-  const basePill   = document.getElementById('score-base');
-  const vidKinds   = ['gen', 'ours', 'base'];
-  const exVideos   = Object.fromEntries(vidKinds.map(k => [k, document.getElementById('v-' + k)]));
-
-  // Bump MEDIA_REV whenever videos or posters are rebuilt so caches invalidate.
-  const MEDIA_REV = '7';
-  let currentTask = 'whiteboard';
-  let currentRun  = 1;
-
-  // --- Group-synchronized looping -------------------------------------
-  // The three clips have different lengths. Instead of looping each one
-  // independently (which drifts them apart), every clip holds its last
-  // frame when it ends; once ALL clips have ended, they restart together.
-  const endedSet = new Set();
-  const readySet = new Set();
-  const activeKinds = () => vidKinds.filter(k => exVideos[k]);
-
-  function groupStart() {
-    readySet.clear();
-    endedSet.clear();
-    activeKinds().forEach(k => {
-      const el = exVideos[k];
-      try { el.currentTime = 0; } catch (e) {}
-      el.play().catch(() => {});
-    });
-  }
-
-  function paintExplorer() {
-    const t = TASKS[currentTask];
-    readySet.clear();
-    endedSet.clear();
-    vidKinds.forEach(kind => {
-      const el = exVideos[kind];
-      if (!el) return;
-      const src    = `videos/${currentTask}_run${currentRun}_${kind}.mp4?v=${MEDIA_REV}`;
-      const poster = `videos/${currentTask}_run${currentRun}_${kind}.jpg?v=${MEDIA_REV}`;
-      if (el.getAttribute('src') !== src) {
-        el.pause();
-        el.setAttribute('poster', poster);
-        el.setAttribute('src', src);
-        el.load();
-        el.muted = true;
-        // start all three together once every clip is ready
-        // (a synchronous play() after load() gets aborted by the load reset)
-        el.addEventListener('loadeddata', () => {
-          readySet.add(kind);
-          if (readySet.size === activeKinds().length) groupStart();
-        }, { once: true });
-      }
-    });
-    if (oursPill) oursPill.textContent = `${t.success.ours} / ${t.success.total} ours`;
-    if (basePill) basePill.textContent = `${t.success.base} / ${t.success.total} base`;
-    taskBtns.forEach(b => b.classList.toggle('is-active', b.dataset.task === currentTask));
-    runBtns.forEach(b => b.classList.toggle('is-active', parseInt(b.dataset.run, 10) === currentRun));
-  }
-
-  taskBtns.forEach(b => b.addEventListener('click', () => {
-    if (currentTask !== b.dataset.task) {
-      currentTask = b.dataset.task;
-      paintExplorer();
-    }
-  }));
-  runBtns.forEach(b => b.addEventListener('click', () => {
-    const r = parseInt(b.dataset.run, 10) || 1;
-    if (currentRun !== r) {
-      currentRun = r;
-      paintExplorer();
-    }
-  }));
-
-  // Explorer videos play muted in parallel so the user sees the
-  // comparison side-by-side. When the user unmutes one, re-mute the others
-  // so the contact audio is clearly attributable to a single clip.
-  Object.entries(exVideos).forEach(([kind, el]) => {
-    if (!el) return;
-    el.removeAttribute('loop');   // looping is managed by the group sync below
-    el.addEventListener('ended', () => {
-      endedSet.add(kind);
-      if (endedSet.size === activeKinds().length) groupStart();
-    });
-    el.addEventListener('volumechange', () => {
-      if (!el.muted) {
-        Object.values(exVideos).forEach(other => {
-          if (other && other !== el) other.muted = true;
-        });
-      }
-    });
+  // Each entry explicitly maps a generated clip to its execution pair.
+  const TASKS = window.EXPERIMENT_VIDEOS;
+  const taskBtns = document.querySelectorAll('.seg--task .seg__btn');
+  const runBox = document.querySelector('.seg--run');
+  const kinds = ['gen', 'base', 'ours'];
+  const videos = Object.fromEntries(kinds.map(k => [k, document.getElementById('v-' + k)]));
+  let currentTask = 'whiteboard', currentRun = 0, generation = 0;
+  let active = [], ended = new Set();
+  const note = document.createElement('p');
+  note.className = 'muted'; note.style.fontSize = '13px';
+  document.querySelector('.explorer__videos').after(note);
+  const startGroup = () => active.forEach(k => {
+    const el = videos[k]; el.currentTime = 0; el.play().catch(() => {});
   });
-
-  // Autoplay explorer videos (muted) when the explorer section is in view.
-  if (!mqReduce.matches && 'IntersectionObserver' in window) {
-    const explorerSec = document.getElementById('results');
-    if (explorerSec) {
-      const vo = new IntersectionObserver((entries) => {
-        entries.forEach(({ isIntersecting, intersectionRatio }) => {
-          const shouldPlay = isIntersecting && intersectionRatio >= 0.3;
-          Object.values(exVideos).forEach(el => {
-            if (!el) return;
-            if (shouldPlay) {
-              // Don't restart a video already playing with sound, and don't
-              // solo-restart an ended clip that is waiting for the group loop
-              if (el.paused && el.muted && !el.ended) el.play().catch(() => {});
-            } else {
-              if (!el.ended) el.pause();
-            }
-          });
-        });
-      }, { threshold: [0, 0.3, 0.6] });
-      vo.observe(explorerSec);
-    }
+  function paintExplorer() {
+    const token = ++generation;
+    const task = TASKS[currentTask], run = task.runs[currentRun];
+    active = kinds.filter(k => run[k]); ended = new Set();
+    runBox.replaceChildren();
+    const caption = document.createElement('span'); caption.className = 'seg__caption'; caption.textContent = 'Run'; runBox.append(caption);
+    task.runs.forEach((r, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'seg__btn' + (i === currentRun ? ' is-active' : '');
+      b.textContent = i + 1; b.dataset.run = i + 1;
+      b.addEventListener('click', () => { currentRun = i; paintExplorer(); }); runBox.append(b);
+    });
+    const ready = new Set();
+    kinds.forEach(k => {
+      const el = videos[k], fig = el.closest('figure'), item = run[k];
+      el.pause(); el.onloadeddata = null;
+      let missing = fig.querySelector('.missing-video');
+      if (!missing) { missing = document.createElement('div'); missing.className = 'missing-video'; missing.textContent = 'Matching generated video not yet available'; fig.append(missing); }
+      el.hidden = !item; missing.hidden = !!item;
+      if (!item) { el.removeAttribute('src'); el.removeAttribute('poster'); el.load(); return; }
+      el.poster = item.poster; el.src = item.src; el.muted = true;
+      const badge = fig.querySelector('.video-badge'); if (badge) badge.textContent = item.speed + '×';
+      el.onloadeddata = () => {
+        if (token !== generation) return;
+        ready.add(k); if (ready.size === active.length && !mqReduce.matches) startGroup();
+      };
+      el.load();
+    });
+    videos.ours.closest('figure').querySelector('.vdesc').textContent = run.forceDescription || 'Force-regulated trajectory execution';
+    document.getElementById('score-ours').textContent = `${task.success.ours} / ${task.success.total} ours`;
+    document.getElementById('score-base').textContent = `${task.success.base} / ${task.success.total} base`;
+    taskBtns.forEach(b => b.classList.toggle('is-active', b.dataset.task === currentTask));
+    note.textContent = currentTask === 'lamp'
+      ? 'Displayed set: 6 original website runs + 4 additional runs. Membership in the original paper evaluation set has not been verified.'
+      : (currentTask === 'chocolate' ? 'Displayed set: 6 original website runs + 4 additional runs.' : 'Displayed set: 10 local zero-shot experiment pairs.');
   }
+  taskBtns.forEach(b => b.addEventListener('click', () => { currentTask = b.dataset.task; currentRun = 0; paintExplorer(); }));
+  kinds.forEach(k => {
+    const el = videos[k]; el.removeAttribute('loop');
+    el.addEventListener('ended', () => { ended.add(k); if (active.every(a => ended.has(a))) { ended.clear(); startGroup(); } });
+    el.addEventListener('volumechange', () => { if (!el.muted) kinds.filter(a => a !== k).forEach(a => { videos[a].muted = true; }); });
+  });
+  paintExplorer();
 
   // --- copy bibtex ---------------------------------------
   const copyBtn = document.getElementById('copy-bib');

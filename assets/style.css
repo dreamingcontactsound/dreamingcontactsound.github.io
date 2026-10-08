@@ -725,3 +725,10 @@ code, pre, .mono {
 .meter__note { margin: 2px 0 0; font-size: 13px; color: var(--ink-muted); }
 .meter__note strong { color: var(--ink); }
 @media (max-width: 820px) { .hammer { grid-template-columns: 1fr; } }
+
+/* Explicitly unavailable generated clips must not show unrelated media. */
+.missing-video { box-sizing: border-box; width: 100%; aspect-ratio: 16/9; display: grid; place-items: center; background: #f1f4f7; color: #687583; border-radius: 12px; padding: 24px; text-align: center; }
+.missing-video[hidden], .explorer__videos video[hidden] { display: none; }
+.seg--run { flex-wrap: wrap; }
+
+.explorer__video video { object-fit: contain; }
