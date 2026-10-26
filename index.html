@@ -124,10 +124,9 @@
             <span class="btn btn--ghost btn--inactive" aria-disabled="true">
               Code<span class="btn__tag">Coming Soon</span>
             </span>
-            <!-- TODO: replace span with <a> when dataset URL exists -->
-            <span class="btn btn--ghost btn--inactive" aria-disabled="true">
-              Dataset<span class="btn__tag">Coming Soon</span>
-            </span>
+            <a class="btn btn--ghost" href="#dataset">
+              Dataset<span class="btn__arrow" aria-hidden="true">↓</span>
+            </a>
           </div>
         </div>
 
@@ -387,6 +386,31 @@ Audio: Emphasize the sound of physical interaction and contact force central to 
       </div>
 
     </div>
+
+    <section class="abstract section section--divided reveal" id="dataset">
+      <p class="kicker">Dataset</p>
+      <h2>Dreaming Contact Dataset</h2>
+      <div class="abstract__body">
+        <p>
+          Data-collection demonstrations for whiteboard wiping, carrot peeling,
+          lamp button pressing, and chocolate box stacking, prepared in
+          <strong>LeRobot v3.0</strong> format. Each task includes external and wrist
+          camera recordings, end-effector states, commanded actions, and force records.
+        </p>
+        <p>
+          This release covers data collection only. Policy-evaluation and zero-shot
+          test rollouts are not included. Download the four task archives and
+          documentation from Google Drive.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--ghost"
+           href="https://drive.google.com/drive/folders/1grJtzWbp5jvkMZo15ZCLVTK3g6qHg80P?usp=drive_link"
+           target="_blank" rel="noopener noreferrer">
+          Download<span class="btn__arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
 
     <!-- 6. FOOTER ============================================ -->
     <footer class="page-footer">
